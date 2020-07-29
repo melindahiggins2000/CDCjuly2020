@@ -43,7 +43,7 @@ There is a handy function `glimpse()` from the **tibble** package that gives us 
 
 ```{r}
 library(tibble)
-glimpse(abalone)
+tibble::glimpse(abalone)
 ```
 
 ## Other ways to get descriptive information on the dataset
@@ -104,8 +104,9 @@ What sex are most of these?
 
 ```{r}
 # insert your code here
-
-
+abalone %>%
+  arrange(wholeWeight) %>%
+  tail(8)
 ```
 
 ## Let's make the document a little nicer

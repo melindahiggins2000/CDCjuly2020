@@ -8,11 +8,13 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(echo = FALSE) # echo=TRUE shows R code, FALSE hide code
+knitr::opts_chunk$set(error = TRUE) # error=TRUE document compile even with errors
+knitr::opts_chunk$set(message = FALSE) # do not show messages
+knitr::opts_chunk$set(warning = FALSE) # do not show warnings
 ```
 
-```{r}
+```{r loaddata}
 # load the abalone dataset
 library(readr)
 abalone <- readr::read_csv("abalone.csv")
@@ -22,7 +24,8 @@ abalone <- readr::read_csv("abalone.csv")
 
 Let's get some summary statistics using the `summary()` function. The summary function will give us the mean, sd, median, min and max for numerical data. _All that is missing is the interquartile range._
 
-```{r}
+```{r getsummary}
+library(dplyr)
 # get summary stats of diameter
 abalone %>%
   select(diameter) %>%

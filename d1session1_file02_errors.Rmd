@@ -8,8 +8,8 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(echo = TRUE) # show code
+knitr::opts_chunk$set(error = TRUE) # still compile with errors
 ```
 
 ```{r}
@@ -20,12 +20,17 @@ abalone <- readr::read_csv("abalone.csv")
 
 ## Get some summary statistics
 
-Let's get some summary statistics using the `summary()` function. The summary function will give us the mean, sd, median, min and max for numerical data. _All that is missing is the interquartile range._
+Let's get some summary statistics using the `summary()` function. The summary function will give us the mean, median, min and max and IQR for numerical data. _All that is missing is the standard deviation._
 
 ```{r}
 # get summary stats of diameter
+library(dplyr)
 abalone %>%
   select(diameter) %>%
+  summary()
+
+# we can do for whole dataset
+abalone %>%
   summary()
 ```
 
@@ -45,11 +50,23 @@ abalone$sex_factor <- factor(abalone$sex,
                              levels = c("M","F","I"),
                              labels = c("Male",
                                         "Female",
-                                        "Immature"))
+                                        "Infants"))
 abalone %>%
   select(sex_factor) %>%
   summary()
 ```
+
+Let's do this again - the dplyr way - using mutate()
+
+```{r}
+abalone <- abalone %>%
+  mutate(sexF = factor(sex,
+                       levels = c("M","F","I"),
+                       labels = c("Male",
+                                  "Female",
+                                  "Infants")))
+```
+
 
 Let's try some other packages and functions. The `describe()` function is really useful from the **Hmisc** package.
 

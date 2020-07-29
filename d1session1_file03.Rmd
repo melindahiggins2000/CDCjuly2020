@@ -37,10 +37,14 @@ There are many functions for getting specific statistics such as: `mean()`, `sd(
 Get the mean diameter of all of the abalones.
 
 ```{r}
-abalone %>%
+# save mean diameter of abalones
+meandiam <- abalone %>%
   pull(diameter) %>%
   mean()
+meandiam
 ```
+
+The mean diameter of all of the abalones is `r meandiam`.
 
 Let's get the mean and standard deviation for the abalones diameter. We'll use the `summarise()` function from **dplyr**.
 
@@ -97,7 +101,10 @@ Get the median and iqr for the abalone wholeWeight by sex - use the `summarise()
 
 ```{r}
 # insert your code here
-
+abalone %>%
+  group_by(sex) %>%
+  summarise(median = median(wholeWeight),
+            iqr = quantile(wholeWeight, c(0.25, 0.75)))
 
 ```
 

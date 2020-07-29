@@ -50,7 +50,7 @@ Not terribly exciting, but we do have a graphic window defined and ready for wha
 
 ## Making a histogram
 
-Let's look at the abalones heights and make a histogram. To start we need to specify which variable we will be plotting. We do this using the aes() or aestheitc command.
+Let's look at the abalones heights and make a histogram. To start we need to specify which variable we will be plotting. We do this using the aes() or aesthetic command.
 
 ```{r}
 ggplot(data = abalone,
@@ -104,11 +104,9 @@ See Help/ggplot2 cheatsheet and see more at RStudio [https://rstudio.com/resourc
 # Histogram overlaid with kernel density curve
 ggplot(data = abalone, aes(x=height)) + 
     geom_histogram(aes(y=..density..),      
-                   # Histogram with density instead of count on y-axis
                    binwidth = 0.03,
                    colour="black", fill="white") +
     geom_density(alpha=.2, fill="#FF6666")  
-# Overlay with transparent density plot
 ```
 
 ## Make clustered boxplots
@@ -148,6 +146,10 @@ Modify the code above to set the violin plot fill color to "yellow".
 
 ```{r}
 # insert your code here
+ggplot(data = abalone,
+       aes(x=sex, y=height)) +
+  geom_violin(color = "black", fill = "yellow") +
+  geom_boxplot(fill = "green")
 
 ```
 

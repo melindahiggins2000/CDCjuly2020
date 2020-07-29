@@ -9,6 +9,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 ```{r}
@@ -23,6 +24,7 @@ Let's get some summary statistics using the `summary()` function. The summary fu
 
 ```{r}
 # get summary stats of diameter
+library(dplyr)
 abalone %>%
   select(diameter) %>%
   summary()
