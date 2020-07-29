@@ -1,0 +1,103 @@
+---
+title: "Day 1 - File 3"
+author: "Melinda Higgins"
+date: "7/28/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+# set up knitr options
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+# load libraries needed for this document
+library(dplyr)
+library(Hmisc)
+library(readr)
+
+# load the abalone dataset
+abalone <- readr::read_csv("abalone.csv")
+# add sex as a factor type variable
+abalone$sex_factor <- factor(abalone$sex,
+                             levels = c("M","F","I"),
+                             labels = c("Male",
+                                        "Female",
+                                        "Immature"))
+
+```
+
+## Get specific statistics on the abalones
+
+There are many functions for getting specific statistics such as: `mean()`, `sd()`, `median()`, `min()`, `max()`, and `quantile()`. Each of these functions assumes only 1 variable (vector) is being input to the function. So, let's use the `pull()` function from the **dplyr** package.
+
+Get the mean diameter of all of the abalones.
+
+```{r}
+abalone %>%
+  pull(diameter) %>%
+  mean()
+```
+
+Let's get the mean and standard deviation for the abalones diameter. We'll use the `summarise()` function from **dplyr**.
+
+```{r}
+abalone %>%
+  summarise(mean = mean(diameter), 
+            sd = sd(diameter))
+```
+
+Let's get the median and IQR. With the updated version of **dplyr** 1.0.0 we can get multiple values at once.
+
+HINT: Type `sessionInfo()` to get the current listing of all package loaded into memory at this point in your analysis.
+
+```{r}
+sessionInfo()
+```
+
+Get the median and IQR of the abalone diameters.
+
+```{r}
+abalone %>%
+  summarise(median = median(diameter),
+            iqr = quantile(diameter, c(0.25, 0.75)))
+```
+
+## Other options for multiple stats for multiple variables
+
+Let's use the `summarise_all()` function with the `list()` option for multiple statistical functions.
+
+```{r}
+abalone %>%
+  select(length, height, diameter) %>%
+  summarise_all(list(mean, sd))
+```
+
+## Grouping
+
+Another useful function is the `group_by()` function from **dplyr**. Let's get these same stats for these variables again, but this time for each abalone sex. 
+
+So, we need to add the `group_by()` function to create a "grouped" data class that these **dplyr** functions use to group the output.
+
+This is similar to a CLASS statement in SAS.
+
+```{r}
+abalone %>%
+  group_by(sex) %>%
+  select(sex, length, height, diameter) %>%
+  summarise_all(list(mean, sd))
+```
+
+## Your turn
+
+Get the median and iqr for the abalone wholeWeight by sex - use the `summarise()` function here, not the `summarise_all()` function.
+
+```{r}
+# insert your code here
+
+
+```
+

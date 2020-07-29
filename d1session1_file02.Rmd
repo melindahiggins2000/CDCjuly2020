@@ -1,0 +1,154 @@
+---
+title: "Day 1 - File 2"
+author: "Melinda Higgins"
+date: "7/28/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load the abalone dataset
+library(readr)
+abalone <- readr::read_csv("abalone.csv")
+```
+
+## Get some summary statistics
+
+Let's get some summary statistics using the `summary()` function. The summary function will give us the mean, sd, median, min and max for numerical data. _All that is missing is the interquartile range._
+
+```{r}
+# get summary stats of diameter
+abalone %>%
+  select(diameter) %>%
+  summary()
+```
+
+However, the `summary()` function is not very useful for character data.
+
+```{r}
+# get summary stats of sex - frequencies
+abalone %>%
+  select(sex) %>%
+  summary()
+```
+
+We could create a "factor" type variable for `sex`.
+
+```{r}
+abalone$sex_factor <- factor(abalone$sex,
+                             levels = c("M","F","I"),
+                             labels = c("Male",
+                                        "Female",
+                                        "Immature"))
+abalone %>%
+  select(sex_factor) %>%
+  summary()
+```
+
+Let's try some other packages and functions. The `describe()` function is really useful from the **Hmisc** package.
+
+```{r}
+library(Hmisc)
+# get descriptive stats for wholeWeight
+abalone %>%
+  select(wholeWeight) %>%
+  Hmisc::describe()
+
+# Hmisc::describe() also works for character variables
+abalone %>%
+  select(sex) %>%
+  Hmisc::describe()
+```
+
+Why am I typing the `packagename::functionname()`?
+
+Some packages have functions with the SAME NAME! It is really helpful to type the name of the package followed by 2 colons :: and then the function name to avoid confusion.
+
+For example, let's try the `describe()` from the **psych** package.
+
+```{r}
+library(psych)
+abalone %>%
+  select(wholeWeight) %>%
+  psych::describe()
+```
+
+Oops we get an error. What happened??
+
+It turns out it is often important to know what each function is producing.
+
+Let's save and review the results from the `select()` function above.
+
+```{r}
+# save this output in an object named aww_select
+aww_select <- abalone %>%
+  select(wholeWeight)
+# what is the class of this object?
+class(aww_select)
+```
+
+This is a "tibble data frame". The **psych** package `describe()` function doesn't know what to do with this kind of data object.
+
+There is another way to pull out 1 variable. Use the `pull()` function.
+
+Let's see what kind of object that creates.
+
+```{r}
+# save this output in an object named aww_pull
+aww_pull <- abalone %>%
+  pull(wholeWeight)
+# what is the class of this object?
+class(aww_pull)
+```
+
+This is now a numeric vector.
+
+Let's try our `describe()` function from the **psych** package again with this approach.
+
+```{r}
+abalone %>%
+  pull(wholeWeight) %>%
+  psych::describe()
+```
+
+We can also use the `as.data.frame()` function to convert the output to a regular data.frame object and then call `psych::describe()`.
+
+There are a number of `as.xxx()` and `is.xxx()` functions which are helpful for sorting out "class-type mismatch" errors that often occur in R. 
+
+```{r}
+abalone %>%
+  select(wholeWeight) %>%
+  as.data.frame() %>%
+  psych::describe()
+```
+
+It is worth noting that the `psych::describe()` function only works on numeric data. It will not work on character variables nor factor type variables.
+
+Type `help(describe, package="psych")` in the console.
+
+```{r}
+abalone %>%
+  pull(sex) %>%
+  psych::describe()
+
+abalone %>%
+  pull(sex_factor) %>%
+  psych::describe()
+```
+
+## This file won't knit??
+
+Notice that this file will not knit. This is because some of our code above has errors. In production we probably do not want to create a report with errors in it. So, by default **Rmarkdown** won't compile or "knit" a document that has errors.
+
+We can override this by adding an **knitr** option setting `error = TRUE` and the document should knit.
+
+Add this to the 1st code chunk above and try knitting this document again.
+
+```
+knitr::opts_chunk$set(error = TRUE)
+```

@@ -1,5 +1,5 @@
 ---
-title: "Day 1 - Session 1"
+title: "Day 1 - File 1"
 author: "Melinda Higgins"
 date: "7/28/2020"
 output: html_document
@@ -9,8 +9,6 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-library(printr)
 ```
 
 ## Abalone Dataset
@@ -41,12 +39,29 @@ head(abalone)
 
 ## Get a glimpse of the dataset
 
+There is a handy function `glimpse()` from the **tibble** package that gives us good summary information about our dataset.
+
 ```{r}
 library(tibble)
 glimpse(abalone)
 ```
 
+## Other ways to get descriptive information on the dataset
+
+Other useful function are the `str()` or structure function and the `dim()` or dimension function.
+
+```{r}
+str(abalone)
+dim(abalone)
+```
+
 ## Arrange (sort) data by height, view top 6 rows
+
+For most of this workshop, I will use the "tidyverse" suite of packages. One of the key packages we will use is the **dplyr** package. This package provides for the pipe `%>%` function which is a really great way to program.
+
+The pipe `%>%` function allows you to write code in a logical step by step approach.
+
+For example, the code below says to start with the abalone dataset "and then" or "next" arrange the data by the variable `height` from the abalone dataset "and then" get the top 6 rows of the dataset using the `head()` function.
 
 ```{r}
 library(dplyr)
@@ -54,6 +69,16 @@ abalone %>%
   arrange(height) %>%
   head()
 ```
+
+The alternative way to do this without the **dplyr** pipe `%>%` function is to use nested function calls.
+
+This is harder to read and much easier to make mistakes if you leave off a `()` or get the nested options mixed up.
+
+```{r}
+head(arrange(abalone, height))
+```
+
+Let's try some more...
 
 ## Arrange (sort) data by rings in descending order, view top 10 rows
 
@@ -71,3 +96,20 @@ abalone %>%
   tail(5)
 ```
 
+## Exercise for you
+
+Using the example above, write the R code to sort the abalone dataset in ascending order by `wholeWeight` and view the bottom 8 rows - list the 8 heaviest abalones.
+
+What sex are most of these?
+
+```{r}
+# insert your code here
+
+
+```
+
+## Let's make the document a little nicer
+
+There is a handy package called **printr** that makes every attempt to make a knitted document look better.
+
+Let's go back to the top of the file and add the **printr** package using the `library()` command.
